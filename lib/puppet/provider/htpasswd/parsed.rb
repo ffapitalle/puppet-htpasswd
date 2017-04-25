@@ -24,6 +24,17 @@ Puppet::Type.type(:htpasswd).provide(
       end
     end
 
+  def file_perm
+    if target
+      0644
+    end
+  end
+
+  def flush
+    super
+    File.chmod(file_perm, target)
+  end
+
   def self.prefetch_hook(records)
     name = nil
     res = records.each do |record|
